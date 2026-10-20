@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vani Women Cabs</title>
+<style>
+:root{--navy:#14213d;--pink:#e85d8f;--pale:#fff2f7;--ink:#202638;--muted:#6d7484;--line:#f0dce5}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#fffafd;color:var(--ink)}
+header{background:var(--navy);color:white;padding:18px 5%;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.brand{font-size:22px;font-weight:800}.brand span{color:#ff9fc0}
+.hero{padding:40px 5%;background:linear-gradient(120deg,#fff0f6,#fff);display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+h1{font-size:clamp(32px,4vw,50px);color:var(--navy);margin:12px 0}.hero p,.note{color:var(--muted);line-height:1.55}.pill{background:#ffe0ec;color:#8b2850;border-radius:30px;padding:7px 12px;font-size:12px;font-weight:bold}
+.hero-card,.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 24px #4a153008}.hero-icon{text-align:center;background:var(--pale);border-radius:14px;padding:16px;font-size:70px}
+main{padding:28px 5% 45px;display:grid;grid-template-columns:minmax(270px,.9fr) minmax(300px,1.1fr);gap:22px}h2{color:var(--navy);margin-top:0}
+label{display:block;font-size:13px;font-weight:bold;margin:12px 0 6px}input{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;font-size:15px}
+button{border:0;border-radius:9px;padding:11px 13px;font-weight:bold;cursor:pointer}.primary{background:var(--pink);color:white;width:100%;margin-top:15px}.secondary{background:#f4f1f5;color:var(--navy)}.sos{background:#b42332;color:white}
+.notice{background:#fff8df;border:1px solid #f1dfa2;border-radius:10px;padding:11px;font-size:12px;line-height:1.5;margin-top:13px}
+.booking{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}.top{display:flex;justify-content:space-between;gap:10px}.status{background:#f5e8ff;color:#6e3b8b;border-radius:20px;padding:5px 8px;font-size:11px;font-weight:bold}.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.actions button{font-size:11px;padding:8px}.empty{text-align:center;padding:25px;color:var(--muted);background:#fffbfd;border-radius:10px}
+footer{text-align:center;padding:18px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+@media(max-width:740px){.hero,main{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="brand">VANI <span>WOMEN CABS</span></div><small>Women-led rides • Competition demo</small></header>
+<section class="hero"><div><span class="pill">A RIDE EXPERIENCE DESIGNED FOR WOMEN</span><h1>Travel with more confidence.</h1><p>Book a demo ride with Vani Women Cabs, a concept focused on women passengers and women drivers. This is a prototype, not a live taxi service.</p></div>
+<div class="hero-card"><div class="hero-icon">🚕</div><h2 style="text-align:center">Your journey, your choice.</h2><p style="text-align:center">Simple booking • Demo driver details • Booking status</p></div></section>
+<main><section class="panel"><h2>Book a demo cab</h2><form id="form">
+<label for="name">Your name</label><input id="name" required maxlength="80" placeholder="Enter your name">
+<label for="phone">Mobile number</label><input id="phone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number">
+<label for="pickup">Pickup location</label><input id="pickup" required maxlength="150" placeholder="e.g. College Gate, Jind">
+<label for="destination">Destination</label><input id="destination" required maxlength="150" placeholder="e.g. Bus Stand, Jind">
+<button class="primary">Request demo booking</button></form>
+<div class="notice"><b>Demo safety notice:</b> SOS is simulated. It does not call police, send location, or alert a real person. Do not use for real travel or emergencies.</div>
+<button class="sos" id="sos" style="width:100%;margin-top:10px">SOS — Simulate demo alert</button><p id="msg" class="note" role="status"></p></section>
+<section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2>Your bookings</h2><button id="refresh" class="secondary">Refresh</button></div><p class="note">Driver details and fare are demo data. No real driver is dispatched.</p><div id="list"><div class="empty">Bookings will appear here.</div></div></section></main>
+<footer>Vani Women Cabs • Competition prototype • No live dispatch or emergency response</footer>
+<script>
+const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function load(){try{let r=await fetch('/api/bookings');if(!r.ok)throw 0;let a=await r.json();$('list').innerHTML=a.length?a.reverse().map(b=>`<article class="booking"><div class="top"><b>Booking #${b.id}</b><span class="status">${esc(b.status.replaceAll('_',' '))}</span></div><p>📍 <b>From:</b> ${esc(b.pickup)}<br>🏁 <b>To:</b> ${esc(b.destination)}</p><p class="note">Customer: ${esc(b.customerName)} · Demo fare ₹${Number(b.estimatedFare).toFixed(0)}<br>Demo driver: ${esc(b.driverName)} · Cab: ${esc(b.carNumber)}</p><div class="actions"><button class="secondary" onclick="status(${b.id},'CONFIRMED')">Confirm</button><button class="secondary" onclick="status(${b.id},'RIDE_STARTED')">Start ride</button><button class="secondary" onclick="status(${b.id},'COMPLETED')">Complete</button><button class="secondary" onclick="status(${b.id},'CANCELLED')">Cancel</button><button class="sos" onclick="sos(${b.id})">Demo SOS</button></div></article>`).join(''):'<div class="empty">No bookings yet. Request your first demo cab.</div>'}catch(e){$('list').innerHTML='<div class="empty">Could not load. Check if Spring Boot is running.</div>'}}
+$('form').addEventListener('submit',async e=>{e.preventDefault();$('msg').textContent='Submitting…';let body={customerName:$('name').value.trim(),phone:$('phone').value.trim(),pickup:$('pickup').value.trim(),destination:$('destination').value.trim()};try{let r=await fetch('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let b=await r.json();if(!r.ok)throw Error(b.detail||b.message||'Check details');$('msg').textContent=`Demo booking #${b.id} created. No real cab dispatched.`;$('form').reset();load()}catch(e){$('msg').textContent=e.message||'Could not create booking'}})
+async function status(id,s){try{let r=await fetch('/api/bookings/'+id+'/status',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:s})});if(!r.ok)throw 0;load()}catch(e){$('msg').textContent='Status update failed'}}
+async function sos(id='demo'){try{let r=await fetch('/api/safety/sos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bookingId:String(id)})});let b=await r.json();$('msg').textContent=b.message}catch(e){$('msg').textContent='Demo SOS unavailable. No emergency service contacted.'}}
+$('sos').onclick=()=>sos();$('refresh').onclick=load;load();
+</script></body></html>
