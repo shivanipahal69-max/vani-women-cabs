@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vani Women Cabs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4ff;
+      text-align: center;
+      padding: 30px 15px;
+    }
+    .card {
+      background: white;
+      max-width: 420px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px #ccd3e0;
+    }
+    h1 { color: #172554; }
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input { border: 1px solid #aaa; }
+    button {
+      background: #172554;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #result { color: #166534; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Vani Women Cabs</h1>
+    <p>Safe rides. Women drivers. Women passengers.</p>
+    <h2>Book Your Demo Ride</h2>
+    <form id="booking">
+      <input id="customer" placeholder="Your name" required>
+      <input id="phone" type="tel" placeholder="Mobile number" required>
+      <input id="pickup" placeholder="Pickup location" required>
+      <input id="destination" placeholder="Destination" required>
+      <button type="submit">Book Demo Ride</button>
+    </form>
+    <p id="result"></p>
+    <p><small>Demo only: no real cab is booked and no driver is notified.</small></p>
+  </div>
+  <script>
+    document.getElementById('booking').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = 'VANI-' + Math.floor(10000 + Math.random() * 90000);
+      document.getElementById('result').textContent =
+        'Demo request created! Booking ID: ' + id;
+    });
+  </script>
+</body>
+</html>
